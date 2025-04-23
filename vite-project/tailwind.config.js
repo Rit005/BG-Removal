@@ -4,7 +4,7 @@ import { assets } from "../assets/assets";
 const Header = () => {
   const rectangleStyle = {
     width: '1100px',
-    height: '550px',
+    height: '450px',
     borderRadius: '5px',
     border: '1px solid #EDEDED',
     backgroundColor: '#FFFFFF',

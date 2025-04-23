@@ -1,4 +1,6 @@
 import React from "react";
+import Navbar from '../components/Navbar'; // Assuming you have a Navbar
+import Footer from '../components/Upload'; // Import the Upload component (assuming it contains the footer)
 import { assets, plans } from "../assets/assets";
 
 const Buycredit = () => {
@@ -14,7 +16,7 @@ const Buycredit = () => {
     flexWrap: 'wrap',
     justifyContent: 'center',
     gap: '20px',
-    
+
   };
 
   const planBoxStyle = {
@@ -75,38 +77,38 @@ const Buycredit = () => {
   };
 
   return (
-    <div className="min-h-[80vh] text-center pt-20 mb-10 bg-[#F9F9F9] py-16">
-      <button className="border border-gray-400 px-8 py-2 rounded-full mb-8 text-sm hover:bg-gray-100 transition mt-4">
-        Our Plans
-      </button>
-      <h1 className="text-center text-2xl md:text-3xl lg:text-4xl mt-4 font-semibold text-[#4A5568] mb-8 sm:mb-12">
-        Choose the plan that's right for you
-      </h1>
+    <div>
+      <Navbar />
+      <div className="min-h-[80vh] text-center pt-20 mb-10 bg-[#F9F9F9] py-16">
+        <button className="border border-gray-400 px-8 py-2 rounded-full mb-8 text-sm hover:bg-gray-100 transition mt-4">
+          Our Plans
+        </button>
+        <h1 className="text-center text-2xl md:text-3xl lg:text-4xl mt-4 font-semibold text-[#4A5568] mb-8 sm:mb-12">
+          Choose the plan that's right for you
+        </h1>
 
-      <div style={rectangleStyle}>
-        {plans.map((item, index) => (
-          <div key={index} style={planBoxStyle}>
-            <img src={assets.logo_icon} alt="" style={logoIconStyle} />
-            <h3 style={titleStyle}>{item.id}</h3>
-            <p style={descriptionStyle}>{item.desc}</p>
-            <p style={priceStyle}>
-              ${item.price} <span style={creditsStyle}>/ {item.credits} credits</span>
-            </p>
-            <button
-              style={{
-                ...buttonStyle,
-                backgroundColor: item.id === "Business" ? '#24272B' : '#24272B',
-                ':hover': {
-                  backgroundColor: item.id === "Business" ? '#4A5568' : '#4A5568',
-                  transform: 'scale(1.05)',
-                },
-              }}
-            >
-              {item.id === "Business" ? "Purchase" : "Get Started"}
-            </button>
-          </div>
-        ))}
+        <div style={rectangleStyle}>
+          {plans.map((item, index) => (
+            <div key={index} style={planBoxStyle}>
+              <img src={assets.logo_icon} alt="" style={logoIconStyle} />
+              <h3 style={titleStyle}>{item.id}</h3>
+              <p style={descriptionStyle}>{item.desc}</p>
+              <p style={priceStyle}>
+                ${item.price} <span style={creditsStyle}>/ {item.credits} credits</span>
+              </p>
+              <button
+                style={{
+                  ...buttonStyle,
+                  backgroundColor: item.id === "Business" ? '#24272B' : '#24272B',
+                }}
+              >
+                {item.id === "Business" ? "Purchase" : "Get Started"}
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
+      <Footer /> {/* Include the Upload component at the bottom (for the footer) */}
     </div>
   );
 };

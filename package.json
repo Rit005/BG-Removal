@@ -1,5 +1,20 @@
 {
+  "name": "bg-removal",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "client": "vite",
+    "server": "nodemon server/server.js",
+    "start": "node server/server.js"
+  },
   "dependencies": {
     "@clerk/clerk-react": "^5.28.2"
+  },
+  "devDependencies": {
+    "concurrently": "^7.6.0",
+    "nodemon": "^3.1.0",
+    "vite": "^4.0.0"
   }
 }

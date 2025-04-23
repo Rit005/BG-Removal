@@ -1,0 +1,50 @@
+/* Basic slider styling (webkit browsers) */
+input[type="range"].slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px; /* Adjust thumb width */
+    height: 20px; /* Adjust thumb height */
+    background: #fff; /* Thumb color */
+    border: 1px solid #ccc; /* Thumb border */
+    cursor: pointer;
+    border-radius: 50%; /* Make it circular */
+  }
+  
+  input[type="range"].slider::-webkit-slider-track {
+    background: #eee; /* Track color */
+    height: 4px; /* Adjust track height */
+    cursor: pointer;
+    border-radius: 2px; /* Track border radius */
+  }
+  
+  /* Basic slider styling (firefox) */
+  input[type="range"].slider::-moz-range-thumb {
+    -moz-appearance: none;
+    appearance: none;
+    width: 20px; /* Adjust thumb width */
+    height: 20px; /* Adjust thumb height */
+    background: #fff; /* Thumb color */
+    border: 1px solid #ccc; /* Thumb border */
+    cursor: pointer;
+    border-radius: 50%; /* Make it circular */
+  }
+  
+  input[type="range"].slider::-moz-range-track {
+    background: #eee; /* Track color */
+    height: 4px; /* Adjust track height */
+    cursor: pointer;
+    border-radius: 2px; /* Track border radius */
+  }
+  
+  /* Focus styling */
+  input[type="range"].slider:focus {
+    outline: none; /* Remove default focus outline */
+  }
+  
+  input[type="range"].slider:focus::-webkit-slider-thumb {
+    box-shadow: 0 0 3px #2196F3; /* Add custom focus style */
+  }
+  
+  input[type="range"].slider:focus::-moz-range-thumb {
+    box-shadow: 0 0 3px #2196F3; /* Add custom focus style */
+  }

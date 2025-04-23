@@ -9,24 +9,23 @@ const BgSlider = () => {
   };
 
   return (
-    <div className="py-16 md:py-10 mx-auto max-w-5xl px-8 lg:px-16"> {/* Increased max width and padding */}
-      {/* Title */}
-      <h1 className="text-center text-2xl md:text-3xl lg:text-4xl mt-4 font-semibold text-[#4A5568] mb-8 sm:mb-12"> {/* Increased font size and margin */}
+    <div className="py-16 md:py-10 mx-auto max-w-5xl px-8 lg:px-16">
+      <h1 className="text-center text-2xl md:text-3xl lg:text-4xl mt-4 font-semibold text-[#4A5568] mb-8 sm:mb-12">
         Remove Background With High <br/> Quality and Accuracy
       </h1>
 
-      <div className="relative w-full max-w-5xl overflow-hidden m-auto rounded-xl mt-10 shadow-lg"> {/* Increased max width and added shadow */}
+      <div className="relative w-[900px] h-[450px] overflow-hidden m-auto rounded-[20px] mt-10 shadow-lg"> {/* Removed inline style for top and left, adjusted marginTop */}
         {/* Background Image */}
         <img
-          className="w-full h-auto"
-          src={assets.image_wo_bg}
+          className="absolute top-0 left-0 w-full h-full object-cover"
+          src={assets.image_w_bg}
           style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
           alt=""
         />
 
         {/* Foreground Image */}
         <img
-          className="absolute top-0 left-0 w-full h-auto"
+          className="absolute top-0 left-0 w-full h-full object-cover"
           src={assets.image_wo_bg}
           style={{ clipPath: `inset(0 0 0 ${sliderPosition}%)` }}
           alt=""
@@ -42,6 +41,8 @@ const BgSlider = () => {
           onChange={handleSliderChange}
         />
       </div>
+
+      {/* ... other content below the slider ... */}
     </div>
   );
 };

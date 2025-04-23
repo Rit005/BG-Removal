@@ -1,8 +1,12 @@
-import dotenv from 'dotenv'; 
-import express from 'express'; 
-import cars from './cars.js'; 
-import connectDB from './configs/mongodb.js';
+import dotenv from 'dotenv';
+dotenv.config(); 
 
+import express from 'express';
+import cars from './cars.js';
+import connectDB from './configs/mongodb.js';
+import userRouter from './routes/userRoutes.js';
+
+// ... rest of your server.js code
 // Load environment variables
 dotenv.config();
 
@@ -22,6 +26,7 @@ async function startServer() {
 
     // API routes
     app.get('/', (req, res) => res.send("API Working"));
+    app.use('/api/user',userRouter)
 
     // Start server
     app.listen(PORT, () => {

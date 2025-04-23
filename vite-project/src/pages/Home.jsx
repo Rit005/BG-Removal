@@ -1,21 +1,22 @@
 import React from "react";
+import Navbar from "../components/Navbar"; 
 import Header from "../components/Header";
 import Steps from "../components/Steps";
-import BgSlider from "../components/Bgslider";
+import BgSlider from "../components/BgSlider";
 import Testimonials from '../components/Testimonials'; 
-
 import Upload from "../components/Upload";
 
 const Home = () => {
-    return(
+    return (
         <div>
-            <Header/>
-            <Steps/>
-            <BgSlider/>
-            <Testimonials/>
-            <Upload/>
+            <Navbar /> 
+            <Header />
+            <Steps />
+            <BgSlider />
+            <Testimonials />
+            <Upload />
         </div>
-    )
-}
+    );
+};
 
-export default Home
+export default Home;
