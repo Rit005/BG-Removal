@@ -1,13 +1,13 @@
 import React, { useContext, useEffect } from "react";
 import { assets } from "../assets/assets";
 import { useClerk, useUser, UserButton } from "@clerk/clerk-react";
-import { Link } from "react-router-dom"; // <-- React Router Link
+import { Link } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 
 const Navbar = () => {
   const { openSignIn } = useClerk();
-  const { isSignedIn, user } = useUser(); // Get the user object
-  const { credit, loadCreditData } = useContext(AppContext);
+  const { isSignedIn, user } = useUser();
+  const { credit, loadCreditData, isLoading } = useContext(AppContext);
   
   useEffect(() => {
     if (isSignedIn) {
@@ -18,7 +18,7 @@ const Navbar = () => {
   return (
     <nav className="bg-white shadow-md py-6">
       <div className="container mx-auto flex justify-between items-center px-8 lg:px-16">
-        {/* Logo links to Home - only rendered once */}
+        {/* Logo - keep one instance */}
         <Link to="/">
           <img src={assets.logo} alt="bg.removal logo" className="w-48 lg:w-64" />
         </Link>
@@ -27,11 +27,13 @@ const Navbar = () => {
         {isSignedIn ? (
           <div className="flex items-center gap-2 sm:gap-3">
             <button className="flex items-center gap-2 bg-blue-100 px-4 sm:px-7 py-1.5 sm:py-2.5 rounded-full hover:scale-105 transition-all duration-700">
-              <img className="w-5" src={assets.credit_icon} alt="" />
-              <p className="text-xs sm:text-sm font-medium text-gray-600">Credits: {credit}</p>
+              <img className="w-5" src={assets.credit_icon} alt=""/>
+              <p className="text-xs sm:text-sm font-medium text-gray-600">
+                Credits: {isLoading ? "Loading..." : (credit || 5)}
+              </p>
             </button>
             {user && (
-              <p className="text-gray-600 max-sm:hidden">Hi, {user.firstName} {user.lastName}</p>
+              <p className="text-gray-600 max-sm:hidden">Hi, {user.firstName || ""} {user.lastName || ""}</p>
             )}
             <UserButton />
           </div>

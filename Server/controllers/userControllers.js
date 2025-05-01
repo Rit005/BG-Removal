@@ -19,10 +19,10 @@ const clerkWebhooks = async (req, res) => {
             case "user.created": {
                 const userData = {
                     clerkId: data.id,
-                    email: data.email_address?.[0]?.email_address || "",
-                    firstName: data.first_name || "Unknown",
-                    lastName: data.last_name || "Unknown",
-                    photo: data.image_url || "",
+                    email: data.email_address[0].email_address ,
+                    firstName: data.first_name ,
+                    lastName: data.last_name ,
+                    photo: data.image_url ,
                 };
 
                 await userModel.create(userData);
@@ -33,10 +33,10 @@ const clerkWebhooks = async (req, res) => {
 
             case "user.updated": {
                 const userData = {
-                    email: data.email_address?.[0]?.email_address || "",
-                    firstName: data.first_name || "Unknown",
-                    lastName: data.last_name || "Unknown",
-                    photo: data.image_url || "",
+                    email: data.email_address[0].email_address,
+                    firstName: data.first_name ,
+                    lastName: data.last_name ,
+                    photo: data.image_url ,
                 };
 
                 await userModel.findOneAndUpdate({ clerkId: data.id }, userData);

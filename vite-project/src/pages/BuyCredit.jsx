@@ -1,5 +1,5 @@
 import React from "react";
-import Navbar from '../components/Navbar'; // Assuming you have a Navbar
+
 import Footer from '../components/Upload'; // Import the Upload component (assuming it contains the footer)
 import { assets, plans } from "../assets/assets";
 
@@ -77,8 +77,10 @@ const Buycredit = () => {
   };
 
   return (
-    <div>
-      <Navbar />
+    
+      
+    
+      // No Navbar tag needed here
       <div className="min-h-[80vh] text-center pt-20 mb-10 bg-[#F9F9F9] py-16">
         <button className="border border-gray-400 px-8 py-2 rounded-full mb-8 text-sm hover:bg-gray-100 transition mt-4">
           Our Plans
@@ -86,7 +88,7 @@ const Buycredit = () => {
         <h1 className="text-center text-2xl md:text-3xl lg:text-4xl mt-4 font-semibold text-[#4A5568] mb-8 sm:mb-12">
           Choose the plan that's right for you
         </h1>
-
+  
         <div style={rectangleStyle}>
           {plans.map((item, index) => (
             <div key={index} style={planBoxStyle}>
@@ -107,10 +109,9 @@ const Buycredit = () => {
             </div>
           ))}
         </div>
+        <Footer/>
       </div>
-      <Footer /> {/* Include the Upload component at the bottom (for the footer) */}
-    </div>
-  );
-};
-
-export default Buycredit;
+    );
+  };
+  
+  export default Buycredit;
