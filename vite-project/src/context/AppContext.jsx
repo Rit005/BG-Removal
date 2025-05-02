@@ -1,77 +1,77 @@
-import { createContext, useState } from 'react';
-import { useAuth } from '@clerk/clerk-react';
-import axios from 'axios';
-import { toast } from 'react-toastify';
+import { createContext, useState, useContext, useEffect } from 'react';
+import { useUser } from '@clerk/clerk-react';
+import { userAPI } from '../api';
 
+// Create context
 export const AppContext = createContext();
 
-const AppContextProvider = (props) => {
-    // Initialize credit with 0 instead of false for better type consistency
-    const [credit, setCredit] = useState(0);
-    const [isLoading, setIsLoading] = useState(false);
-    const backendUrl = import.meta.env.VITE_BACKEND_URL; // Ensure this is correctly set, e.g., 'http://localhost:4000'
-    const { getToken } = useAuth();
+// Custom hook to use the context
+export const useAppContext = () => useContext(AppContext);
 
-    const loadCreditData = async () => {
-        setIsLoading(true);
-        try {
-            const token = await getToken();
-            // Check if token exists
-            if (!token) {
-                console.log("No authentication token available");
-                toast.error("Authentication required to load credits."); // User-friendly message
-                setIsLoading(false);
-                setCredit(0); // Ensure credit is reset if not authenticated
-                return;
-            }
+export const AppProvider = ({ children }) => {
+  const { user, isSignedIn } = useUser();
+  const [credits, setCredits] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-            // This URL seems correct based on your backend routes
-            const { data } = await axios.get(`${backendUrl}/api/user/credits`, {
-                headers: { token } // Ensure backend expects 'token' header (or 'Authorization: Bearer token')
-            });
+  // Fetch user credits
+  const fetchUserCredits = async () => {
+    if (!isSignedIn || !user?.id) return;
+    
+    setLoading(true);
+    try {
+      const response = await userAPI.getCredits(user.id);
+      if (response.success) {
+        setCredits(response.credits);
+      } else {
+        setError('Failed to load credits');
+      }
+    } catch (err) {
+      console.error('Error loading credits:', err);
+      setError('Error loading credits. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-            if (data.success) {
-                // Set credits with a default of 0 if credits is null/undefined
-                setCredit(data.credits || 0);
-                console.log("Credits loaded:", data.credits);
-            } else {
-                // Handle unsuccessful response from backend
-                console.log("Failed to load credits (API Error):", data.message);
-                toast.error(data.message || "Failed to load credits from server");
-                setCredit(0); // Reset credits on failure
-            }
-        } catch (error) {
-            // Handle network errors or other exceptions
-            console.error("Error loading credits (Network/Client Error):", error);
-            // Provide more specific error message if possible
-            const errorMessage = error.response?.data?.message || error.message || "An error occurred while loading credits";
-            toast.error(errorMessage);
-            // Consider different handling based on error type (e.g., 401 Unauthorized vs 500 Server Error)
-            setCredit(0); // Reset credits on error
-        } finally {
-            setIsLoading(false);
-        }
-    };
+  // Use credits for an operation
+  const useCredits = async (amount = 1) => {
+    // This is a placeholder - you'd implement actual credit usage based on your API
+    // In a real implementation, you would call an API endpoint to deduct credits
+    // and then update the local state based on the response
+    
+    // For now, we'll just update the local state
+    if (credits >= amount) {
+      setCredits(prev => prev - amount);
+      return true;
+    }
+    return false;
+  };
 
-    // Consider adding loadCreditData to useEffect hook to load on mount/auth change if needed
-    // Example:
-    // useEffect(() => {
-    //    loadCreditData();
-    // }, [getToken]); // Dependency array might need adjustment based on your auth flow
+  // Refresh credits (e.g., after purchase)
+  const refreshCredits = () => {
+    fetchUserCredits();
+  };
 
-    const value = {
-        credit,
-        setCredit,
-        loadCreditData, // Expose function to allow manual refresh if needed
-        backendUrl,
-        isLoading
-    };
+  // Fetch credits when user signs in
+  useEffect(() => {
+    if (isSignedIn) {
+      fetchUserCredits();
+    } else {
+      setCredits(null);
+    }
+  }, [isSignedIn, user?.id]);
 
-    return (
-        <AppContext.Provider value={value}>
-            {props.children}
-        </AppContext.Provider>
-    );
+  // Context value
+  const value = {
+    credits,
+    creditLoading: loading,
+    creditError: error,
+    useCredits,
+    refreshCredits
+  };
+
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
 
-export default AppContextProvider;
+export default AppProvider;

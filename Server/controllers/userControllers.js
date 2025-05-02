@@ -63,18 +63,40 @@ const clerkWebhooks = async (req, res) => {
 
 
 // API Controller function to get user available credits data
-const userCredits = async(req,res) => {
-    try{
-        const{clerkId}=req.body
-        const userData = await userModel.findOne({clerkId})
-        res.json({success:true,credits:userData.creditBalance})
+// controllers/userControllers.js -> userCredits function
+const userCredits = async (req, res) => {
+    try {
+        const { clerkId } = req.body;
+        if (!clerkId) { /* ... return 400 ... */ }
 
+        console.log(`Backend: Fetching credits for clerkId: ${clerkId}`); // Add logging
+        const userData = await userModel.findOne({ clerkId });
+        console.log(`Backend: Found userData: ${JSON.stringify(userData)}`); // Log found data
+
+        if (!userData) {
+            console.log(`Backend: User not found for clerkId: ${clerkId}`);
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+
+        // === ADD THIS CHECK ===
+        if (userData.creditBalance === undefined || userData.creditBalance === null) {
+             console.error(`Backend: User ${clerkId} found but creditBalance is missing/null! Assigning default.`);
+             // Option 1: Return a default value (e.g., 0 or 5)
+             // userData.creditBalance = 5; // Or 0 if preferred
+             // Option 2: Return an error
+              return res.status(500).json({ success: false, message: 'User data incomplete on server.' });
+        }
+        // =====================
+
+        console.log(`Backend: Returning credits: ${userData.creditBalance}`);
+        return res.status(200).json({
+            success: true,
+            credits: userData.creditBalance
+        });
     } catch (error) {
-        console.log(error.message)
-        res.json({success:false,message:error.message})
-
-        
+        console.error('Backend: Error in userCredits:', error); // Log the full error
+        return res.status(500).json({ success: false, message: 'Internal server error', error: error.message });
     }
-}
+};
 
 export { clerkWebhooks,userCredits };
